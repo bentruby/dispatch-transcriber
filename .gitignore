@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+
+# Runtime data
+recordings/
+processed/
+transcriptions.csv
+
+# Environment
+.env
