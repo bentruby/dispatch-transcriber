@@ -195,9 +195,11 @@ def transcribe_audio(model, audio_path, prompt, config):
             initial_prompt=prompt,
             language="en",
             beam_size=5,
-            vad_filter=True,
-            vad_parameters=dict(min_silence_duration_ms=500),
-            temperature=0.0,
+            vad_filter=False,
+            temperature=[0.0, 0.2, 0.4, 0.6],
+            no_speech_threshold=0.6,
+            log_prob_threshold=-1.0,
+            compression_ratio_threshold=2.4,
             condition_on_previous_text=False  # Prevent hallucination loops
         )
         raw_text = " ".join([segment.text for segment in segments]).strip()
