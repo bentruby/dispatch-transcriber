@@ -1,7 +1,7 @@
 {
   "pushover": {
   "enabled": true,
-  "user_key": "uomddgbmw2t83frrxe6tfq2nw9ibtd",
+  "user_keys": ["uomddgbmw2t83frrxe6tfq2nw9ibtd"],
   "api_token": "a1vzcoswtk53dh751jut7xjfhjusi2",
   "priority": 1
   },
