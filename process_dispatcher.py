@@ -336,7 +336,7 @@ def process_file(model, filepath, filename, config):
                 filename,
                 result['transcription_time']
             )
-            send_pushover("🚑 Dispatch", message, pushover_config)
+            send_pushover("🚑 WRS Page", message, pushover_config)
         
         # Generate HTML view (for mobile access)
         try:
