@@ -17,36 +17,44 @@ def send_pushover(title, message, config):
     Returns:
         True if successful, False otherwise
     """
-    user_key = config.get('user_key', '')
+    # Support both "user_keys" (array) and legacy "user_key" (string)
+    user_keys = config.get('user_keys', [])
+    if not user_keys:
+        legacy_key = config.get('user_key', '')
+        if legacy_key:
+            user_keys = [legacy_key]
+
     api_token = config.get('api_token', '')
     priority = config.get('priority', 1)
-    
-    if not user_key or not api_token:
+
+    if not user_keys or not api_token:
         print("  ⚠️  Pushover credentials not configured in config file")
         return False
-    
-    try:
-        response = requests.post(
-            'https://api.pushover.net/1/messages.json',
-            data={
-                'token': api_token,
-                'user': user_key,
-                'title': title,
-                'message': message,
-                'priority': priority
-            },
-            timeout=10
-        )
-        
-        if response.status_code == 200:
-            return True
-        else:
-            print(f"  ⚠️  Pushover failed: {response.status_code} - {response.text}")
-            return False
-            
-    except Exception as e:
-        print(f"  ⚠️  Pushover error: {e}")
-        return False
+
+    all_success = True
+    for user_key in user_keys:
+        try:
+            response = requests.post(
+                'https://api.pushover.net/1/messages.json',
+                data={
+                    'token': api_token,
+                    'user': user_key,
+                    'title': title,
+                    'message': message,
+                    'priority': priority
+                },
+                timeout=10
+            )
+
+            if response.status_code != 200:
+                print(f"  ⚠️  Pushover failed for {user_key[:8]}...: {response.status_code} - {response.text}")
+                all_success = False
+
+        except Exception as e:
+            print(f"  ⚠️  Pushover error for {user_key[:8]}...: {e}")
+            all_success = False
+
+    return all_success
 
 def format_dispatch_message(corrected_text, filename, transcription_time):
     """Format the dispatch text for notification"""
@@ -79,7 +87,7 @@ if __name__ == "__main__":
         print("\nAdd this to your config file:")
         print('"pushover": {')
         print('  "enabled": true,')
-        print('  "user_key": "your_user_key_here",')
+        print('  "user_keys": ["user_key_1", "user_key_2"],')
         print('  "api_token": "your_api_token_here",')
         print('  "priority": 1')
         print('}')
