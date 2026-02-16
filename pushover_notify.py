@@ -32,7 +32,10 @@ def send_pushover(title, message, config):
         return False
 
     all_success = True
-    for user_key in user_keys:
+    for entry in user_keys:
+        # Support both object format {"name": "...", "key": "..."} and plain string
+        user_key = entry['key'] if isinstance(entry, dict) else entry
+        user_name = entry.get('name', user_key) if isinstance(entry, dict) else user_key
         try:
             response = requests.post(
                 'https://api.pushover.net/1/messages.json',
@@ -47,11 +50,11 @@ def send_pushover(title, message, config):
             )
 
             if response.status_code != 200:
-                print(f"  ⚠️  Pushover failed for {user_key[:8]}...: {response.status_code} - {response.text}")
+                print(f"  ⚠️  Pushover failed for {user_name}: {response.status_code} - {response.text}")
                 all_success = False
 
         except Exception as e:
-            print(f"  ⚠️  Pushover error for {user_key[:8]}...: {e}")
+            print(f"  ⚠️  Pushover error for {user_name}: {e}")
             all_success = False
 
     return all_success
@@ -87,7 +90,8 @@ if __name__ == "__main__":
         print("\nAdd this to your config file:")
         print('"pushover": {')
         print('  "enabled": true,')
-        print('  "user_keys": ["user_key_1", "user_key_2"],')
+        print('  "user_keys": [{"name": "Person 1", "key": "user_key_1"}, ...],')
+
         print('  "api_token": "your_api_token_here",')
         print('  "priority": 1')
         print('}')

@@ -1,7 +1,17 @@
 {
   "pushover": {
   "enabled": true,
-  "user_keys": ["uomddgbmw2t83frrxe6tfq2nw9ibtd"],
+  "user_keys": [
+    {"name": "Kayla Dibb", "key": "unfibarvtsxqmc392xh14e6z7uy4ob"},
+    {"name": "Amie Lee", "key": "ur3ttxfjipp8wubhq5xvcoq2kiws1q"},
+    {"name": "Ben Truby", "key": "uomddgbmw2t83frrxe6tfq2nw9ibtd"},
+    {"name": "Kevin Kwasny", "key": "udeu9699surdpbfh1bpfx5bowgj92n"},
+    {"name": "Zetta Kolf", "key": "umtsbmx9mttkz9ncwf8qm6v7xzyt6t"},
+    {"name": "Bridgette Vine", "key": "uvp4gg8kg23v9ox1n6hgssqg6yyfek"},
+    {"name": "Matt Haupt", "key": "ujzq3qy2rhjhk4t3dxw4y7xewure54"},
+    {"name": "Sandy Wojcik", "key": "u6py5gnpv5specn7x57c8wo2sw9k7o"},
+    {"name": "Andrew Anderson", "key": "uz6oxjd5o7tso1gh1fh8w83gcnvn5h"}
+  ],
   "api_token": "a1vzcoswtk53dh751jut7xjfhjusi2",
   "priority": 1
   },
