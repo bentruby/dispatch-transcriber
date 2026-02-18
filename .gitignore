@@ -6,5 +6,8 @@ recordings/
 processed/
 transcriptions.csv
 
+# Config (contains API keys and user data)
+transcription_config.json
+
 # Environment
 .env

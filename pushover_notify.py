@@ -52,6 +52,8 @@ def send_pushover(title, message, config):
             if response.status_code != 200:
                 print(f"  ⚠️  Pushover failed for {user_name}: {response.status_code} - {response.text}")
                 all_success = False
+            else:
+                print(f"  ⚠️  Pushover successful for {user_name}: {response.status_code} - {response.text}")            
 
         except Exception as e:
             print(f"  ⚠️  Pushover error for {user_name}: {e}")

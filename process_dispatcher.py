@@ -158,6 +158,10 @@ def post_process_transcription(text, config):
     if config.get("strip_dispatcher_headers", True):
         text = strip_dispatcher_header(text)
     
+    # Remove tone artifacts (e.g. OOOOOOO, BOOOOOOO, Boooooo)
+    text = re.sub(r'\b[BObo]+[Oo]{4,}\b', '', text)
+    text = re.sub(r'\s{2,}', ' ', text).strip()
+
     # Apply exact corrections
     text = apply_exact_corrections(text, config.get("exact_corrections", {}))
     
@@ -426,9 +430,15 @@ def watch_and_process(model, config):
 # ENTRY POINT
 # ============================================================================
 
-def main():
+def main(test_mode=False):
     # Load config
     config = load_config()
+
+    if test_mode:
+        print("⚡ Test mode: notifications will only go to Ben Truby")
+        pushover = config.get('pushover', {})
+        pushover['user_keys'] = [e for e in pushover.get('user_keys', []) if isinstance(e, dict) and e.get('name') == 'Ben Truby']
+        config['pushover'] = pushover
     
     # Initialize model
     model = initialize_model()
@@ -437,4 +447,8 @@ def main():
     watch_and_process(model, config)
 
 if __name__ == "__main__":
-    main()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--test', action='store_true', help='Only send notifications to Ben Truby')
+    args = parser.parse_args()
+    main(test_mode=args.test)

@@ -1,0 +1,23 @@
+{
+  "pushover": {
+  "enabled": true,
+  "user_keys": [
+    {"name": "First Last", "key": "your_pushover_user_key_here"}
+  ],
+  "api_token": "your_pushover_api_token_here",
+  "priority": 1
+  },
+  "prompt_vocabulary": "Your County Dispatch to Your Department Rescue. Street names, landmarks, and common phrases heard in your dispatches go here.",
+
+  "strip_dispatcher_headers": true,
+
+  "exact_corrections": {
+    "Example Misheard Phrase": "Correct Phrase"
+  },
+
+  "place_names": [
+    "Your Town",
+    "Main Street",
+    "Highway 141"
+  ]
+}
