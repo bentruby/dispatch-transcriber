@@ -24,6 +24,13 @@ try:
 except ImportError:
     PUSHOVER_AVAILABLE = False
 
+# Active911 alert enrichment
+try:
+    from active911 import get_recent_alert, build_maps_url
+    ACTIVE911_AVAILABLE = True
+except ImportError:
+    ACTIVE911_AVAILABLE = False
+
 # Try to import the appropriate whisper library
 USING_FASTER_WHISPER = False
 try:
@@ -340,6 +347,19 @@ def process_file(model, filepath, filename, config):
                 filename,
                 result['transcription_time']
             )
+
+            # Enrich with Active911 alert data if available
+            if ACTIVE911_AVAILABLE:
+                alert = get_recent_alert()
+                if alert:
+                    address_parts = [alert['address'], alert['city'], alert['state']]
+                    address_str = ', '.join(p for p in address_parts if p)
+                    maps_url = build_maps_url(alert['latitude'], alert['longitude'])
+                    message += f"\n\n📍 {address_str}\n{maps_url}"
+                    print(f"  Active911: {address_str}")
+                else:
+                    print("  Active911: no recent alert found")
+
             send_pushover("🚑 WRS Page", message, pushover_config)
         
         # Generate HTML view (for mobile access)

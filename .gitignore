@@ -8,6 +8,7 @@ transcriptions.csv
 
 # Config (contains API keys and user data)
 transcription_config.json
+active911_config.json
 
 # Environment
 .env
